@@ -9,36 +9,69 @@
 @prefix vcard:   <http://www.w3.org/2006/vcard/ns#> .
 @prefix org:     <http://www.w3.org/ns/org#> .
 
-# Describe this document and state a license
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dsp:     <http://purl.org/dc/dsp/> .
+@prefix :        <http://purl.org/oo/opd-profile/> .
 
-<> a oo:OrganizationProfileDocument ;
-        dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
-        foaf:primaryTopic <http://id.example.ac.uk> .
+:OrganizationProfileDocument 
+	a dsp:DescriptionTemplate ;
+	dsp:standalone "true"^^xsd:boolean ;
+	dsp:resourceClass oo:OrganizationProfileDocument ;
+	dsp:minOccur "1"^^xsd:nonNegativeInteger ;
+	dsp:maxOccur "1"^^xsd:nonNegativeInteger ;
+	dsp:statementTemplate [
+		a dsp:nonLiteralStatementTemplate ;
+		dsp:minOccur "1"^^xsd:nonNegativeInteger ;
+		dsp:maxOccur "1"^^xsd:nonNegativeInteger ;
+		dsp:property foaf:primaryTopic ;
+		dsp:nonLiteralConstraint [
+			a dsp:NonLiteralConstraint ;
+			dsp:descriptionTemplate :Organization .
+		] .
+	] ;
+	dsp:statementTemplate [
+		a dsp:nonLiteralStatementTemplate ;
+		dsp:minOccur "0"^^xsd:nonNegativeInteger ;
+		dsp:maxOccur "1"^^xsd:nonNegativeInteger ;
+		dsp:property dcterms:license .
+	] .
 
-# Some information about the organisation, most of this is optional but the
-# prefLabel, logo and sameAs to the learning-provider URI is strongly encouraged.
+:Organization
+	a dsp:DescriptionTemplate ;
+	dsp:standalone "false"^^xsd:boolean ;
+	dsp:resourceClass foaf:Organization, org:Organization .
 
-<http://id.example.ac.uk>
-        a org:FormalOrganization ;
-        skos:prefLabel "The University of Example" ;
-        skos:hiddenLabel "Example" ;
-        skos:hiddenLabel "Example U" ;
-        vcard:sortLabel "Example, University of" ;
-        vcard:tel <tel:+441234567890> ;
-        foaf:logo <http://www.example.ac.uk/example-logo.png> ;
-        foaf:homepage <http://www.example.ac.uk/> ;
-        owl:sameAs <http://id.learning-provider.data.ac.uk/ukprn/12345678> ;
-        owl:sameAs <http://dbpedia.org/resource/University_of_Example> .
-
-# Describe the source of equipment data, what standard it conforms to, and the license.
-# delete the dcterms:subject as applicable, but you need to have one of
-# facilities/equipment/capabilities to trigger the automatic aggregation of the data.
-
-<http://www.example.ac.uk/equipment.xls>
-        oo:organization <http://id.example.ac.uk/> ;
-        oo:corrections <mailto:bob@example.ac.uk> ;
-        dcterms:subject <http://purl.org/openorg/theme/facilities> ;  
-        dcterms:subject <http://purl.org/openorg/theme/equipment> ;
-        dcterms:subject <http://purl.org/openorg/theme/capabilities> ;
-        dcterms:conformsTo <http://equipment.data.ac.uk/uniquip> ;
-        dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> .
+#
+## Describe this document and state a license
+#
+#<> a oo:OrganizationProfileDocument ;
+#        dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+#        foaf:primaryTopic <http://id.example.ac.uk> .
+#
+## Some information about the organisation, most of this is optional but the
+## prefLabel, logo and sameAs to the learning-provider URI is strongly encouraged.
+#
+#<http://id.example.ac.uk>
+#        a org:FormalOrganization ;
+#        skos:prefLabel "The University of Example" ;
+#        skos:hiddenLabel "Example" ;
+#        skos:hiddenLabel "Example U" ;
+#        vcard:sortLabel "Example, University of" ;
+#        vcard:tel <tel:+441234567890> ;
+#        foaf:logo <http://www.example.ac.uk/example-logo.png> ;
+#        foaf:homepage <http://www.example.ac.uk/> ;
+#        owl:sameAs <http://id.learning-provider.data.ac.uk/ukprn/12345678> ;
+#        owl:sameAs <http://dbpedia.org/resource/University_of_Example> .
+#
+## Describe the source of equipment data, what standard it conforms to, and the license.
+## delete the dcterms:subject as applicable, but you need to have one of
+## facilities/equipment/capabilities to trigger the automatic aggregation of the data.
+#
+#<http://www.example.ac.uk/equipment.xls>
+#        oo:organization <http://id.example.ac.uk/> ;
+#        oo:corrections <mailto:bob@example.ac.uk> ;
+#        dcterms:subject <http://purl.org/openorg/theme/facilities> ;  
+#        dcterms:subject <http://purl.org/openorg/theme/equipment> ;
+#        dcterms:subject <http://purl.org/openorg/theme/capabilities> ;
+#        dcterms:conformsTo <http://equipment.data.ac.uk/uniquip> ;
+#        dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> .
