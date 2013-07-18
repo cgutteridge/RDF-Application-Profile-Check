@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
-require_once( "../arc2-fork/ARC2.php" );
-require_once( "../Graphite/Graphite.php" );
+require_once( "arc/ARC2.php" );
+require_once( "Graphite/Graphite.php" );
 
 $doc_url = "soton-opd.ttl";
 $profile_url = "opd-profile.ttl";
@@ -108,7 +108,6 @@ function applyTemplates( $doc_url )
 # TODO: make $resource->all() do de-dup. (make default to do this, but option to disable for speed)
 # TODO: graphite warn on namespaces which don't end with / or # 
 # TODO: checker warn on namespaces which don't end with / or # 
-# TODO: add $resList->dumpText(). COmmit from local copy
 
 # for each non-standalone description template in the profile, 
   # collect resources which match the class
@@ -213,19 +212,53 @@ function applyClassTemplate( $template, $resource )
 {
 	$t_desc = $this->io->prettyLink( $template );
 	$r_desc = $this->io->prettyLink( $resource );
-
-	print "in act\n";	
 	$this->io->message( "Applying class template $t_desc to resource $r_desc" );
-	print $template->dumpText()."\n";
+	$this->io->incDepth();
+	
 	foreach( $template->all( "dsp:statementTemplate" ) as $s_template )
 	{
-		print "A--\n";
-var_dump( $s_template );
-		print $s_template."\n";
+		print "\nStatementTemplate...\n";
 		print $s_template->dumpText()."\n";
-		print "B--\n";
+		if( $s_template->isType( "dsp:nonLiteralStatementTemplate" ) )
+		{
+			$this->applyNonLiteralStatementTemplate( $s_template, $resource );
+		}
+		elseif( $s_template->isType( "dsp:literalStatementTemplate" ) )
+		{
+			#TODO 
+			$this->applyLiteralStatementTemplate( $s_template, $resource );
+		}
+		elseif( $s_template->isType( "dsp:inverseStatementTemplate" ) )
+		{
+			#TODO 
+			$this->applyInverseStatementTemplate( $s_template, $resource );
+		}
+		else
+		{
+			$this->io->apError( "Unknown template type for ".$this->io->prettyLink( $s_template ).": ".$this->io->prettyLink( $s_template->get( "rdf:type" ) )."." );
+		}
 	}
-	print "out act\n";	
+	$this->io->decDepth();
+}
+
+function applyNonLiteralStatementTemplate( $template, $resource )
+{
+
+	if( $template->has( "dsp:property" ) && $template->has( "dsp:supPropertyOf" ) )
+	{
+		$this->io->apError( "A statement template should not really have both 'property' and 'subPropertyOf' set." );
+	}
+
+	$propertyMatches = array();
+
+#        <dsp:property rdf:resource=""/>
+#        <dsp:property rdf:resource=""/>
+# or
+#        <dsp:subPropertyOf rdf:resource=""/>
+	
+#        <dsp:minOccur rdf:datatype="xsd:nonNegativeInteger">0</dsp:minOccur>
+#        <dsp:maxOccur rdf:datatype="xsd:nonNegativeInteger">0</dsp:maxOccur>
+
 }
 
 // return a string describing the minimum and maximum occurances allowed

@@ -21,11 +21,11 @@ oo:OrganizationProfileDocument rdfs:label "Organization Profile Document" .
 	dsp:standalone "true"^^xsd:boolean ;
 	dsp:resourceClass oo:OrganizationProfileDocument ;
 	dsp:minOccur "1"^^xsd:nonNegativeInteger ;
-	dsp:maxOccur "1"^^xsd:nonNegativeInteger ;
+	dsp:maxOccur "1"^^xsd:nonNegativeIntegerY ;
 	dsp:statementTemplate [
 		a dsp:nonLiteralStatementTemplate ;
 		dsp:minOccur "1"^^xsd:nonNegativeInteger ;
-		dsp:maxOccur "1"^^xsd:nonNegativeInteger ;
+		dsp:maxOccur "1"^^xsd:nonNegativeIntegerX ;
 		dsp:property foaf:primaryTopic ;
 		dsp:nonLiteralConstraint [
 			a dsp:NonLiteralConstraint ;
