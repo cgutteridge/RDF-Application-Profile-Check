@@ -13,8 +13,11 @@
 @prefix dsp:     <http://purl.org/dc/dsp/> .
 @prefix :        <http://purl.org/oo/opd-profile/> .
 
+oo:OrganizationProfileDocument rdfs:label "Organization Profile Document" .
+
 :OrganizationProfileDocument 
 	a dsp:DescriptionTemplate ;
+        rdfs:label "Organization Profile Document Top-Level Template" ;
 	dsp:standalone "true"^^xsd:boolean ;
 	dsp:resourceClass oo:OrganizationProfileDocument ;
 	dsp:minOccur "1"^^xsd:nonNegativeInteger ;
@@ -40,6 +43,8 @@
 	a dsp:DescriptionTemplate ;
 	dsp:standalone "false"^^xsd:boolean ;
 	dsp:resourceClass foaf:Organization, org:Organization .
+
+
 
 #
 ## Describe this document and state a license
