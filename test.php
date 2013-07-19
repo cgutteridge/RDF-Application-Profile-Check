@@ -244,20 +244,47 @@ function applyClassTemplate( $template, $resource )
 function applyNonLiteralStatementTemplate( $template, $resource )
 {
 
-	if( $template->has( "dsp:property" ) && $template->has( "dsp:supPropertyOf" ) )
+	if( $template->has( "dsp:property" ) && $template->has( "dsp:subPropertyOf" ) )
 	{
 		$this->io->apError( "A statement template should not really have both 'property' and 'subPropertyOf' set." );
 	}
 
-	$propertyMatches = array();
+	if( !$template->has( "dsp:property" ) && !$template->has( "dsp:subPropertyOf" ) )
+	{
+		$this->io->apError( "A statement template should have either one or more 'property' or a single 'subPropertyOf'." );
+		return;
+	}
 
-#        <dsp:property rdf:resource=""/>
-#        <dsp:property rdf:resource=""/>
-# or
-#        <dsp:subPropertyOf rdf:resource=""/>
+	if( $template->has( "dsp:property" ) )
+	{
+		$properties = $template->all( "dsp:property" );
+	}
+	else
+	{
+		$super_prop = $template->get( "dsp:subPropertyOf" );
+
+		# only bothers going two levels of sub property
+		$properties = $super_prop->all( "-rdfs:subPropertyOf" )->all( "-rdfs:subPropertyOf" );
+		$properties = $properties->append( $super_prop->all( "-rdfs:subPropertyOf" ) );
+		# don't forget the top level property
+		$properties = $properties->append( $super_prop );
+	}
+
+	$propertyMatches = $resource->all( $properties )->distinct();
 	
-#        <dsp:minOccur rdf:datatype="xsd:nonNegativeInteger">0</dsp:minOccur>
-#        <dsp:maxOccur rdf:datatype="xsd:nonNegativeInteger">0</dsp:maxOccur>
+	if( $template->has( "dsp:minOccur" ) && sizeof( $propertyMatches ) < $template->getString( "dsp:minOccur" ) )
+	{
+		$this->io->docError( "resource has ".(sizeof($propertyMatches))." matching property(s) but should have $min_max" );
+	}
+	elseif( $template->has( "dsp:maxOccur" ) && sizeof( $propertyMatches ) > $template->getString( "dsp:maxOccur" ) )
+	{
+		$this->io->docError( "resource has ".(sizeof($propertyMatches))." matching property(s) but should have $min_max" );
+	}
+	else
+	{
+		$this->io->message( "resource has ".(sizeof($propertyMatches))." matching property(s) which is legit.");
+	}
+
 
 }
 

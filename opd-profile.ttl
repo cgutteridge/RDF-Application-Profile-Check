@@ -31,13 +31,14 @@ oo:OrganizationProfileDocument rdfs:label "Organization Profile Document" .
 			a dsp:NonLiteralConstraint ;
 			dsp:descriptionTemplate :Organization .
 		] .
-	] ;
-	dsp:statementTemplate [
-		a dsp:nonLiteralStatementTemplate ;
-		dsp:minOccur "0"^^xsd:nonNegativeInteger ;
-		dsp:maxOccur "1"^^xsd:nonNegativeInteger ;
-		dsp:property dcterms:license .
+#	] ;
+#	dsp:statementTemplate [
+#		a dsp:nonLiteralStatementTemplate ;
+#		dsp:minOccur "0"^^xsd:nonNegativeInteger ;
+#		dsp:maxOccur "1"^^xsd:nonNegativeInteger ;
+#		dsp:property dcterms:license .
 	] .
+
 
 :Organization
 	a dsp:DescriptionTemplate ;
